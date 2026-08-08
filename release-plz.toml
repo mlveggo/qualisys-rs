@@ -1,0 +1,5 @@
+[workspace]
+# Tag releases as v0.3.0 rather than qualisys-v0.3.0.
+git_tag_name = "v{{ version }}"
+# Refuse a bump that understates a breaking API change.
+semver_check = true
