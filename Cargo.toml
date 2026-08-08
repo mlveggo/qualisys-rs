@@ -1,15 +1,37 @@
 [package]
 name = "qualisys"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
 authors = ["Morgan Larsson"]
 license = "MIT"
+description = "Client for the Qualisys Track Manager (QTM) real time protocol"
+repository = "https://github.com/mlveggo/qualisys-rs"
+keywords = ["qualisys", "qtm", "motion-capture", "mocap"]
+categories = ["network-programming", "science"]
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lib]
+name = "qualisys"
+path = "src/lib.rs"
+
+[[bin]]
+name = "qualisys"
+path = "src/main.rs"
+required-features = ["cli"]
+
+[features]
+default = ["cli"]
+# The command line client; disable to build the library with `log` only.
+cli = ["dep:env_logger"]
 
 [dependencies]
-env_logger = "0.11.3"
-log = "0.4.22"
-num = "0.4.2"
-num-derive = "0.4.2"
-num-traits = "0.2.19"
+log = "0.4"
+env_logger = { version = "0.11", optional = true }
+
+[dev-dependencies]
+env_logger = "0.11"
+
+[[example]]
+name = "streaming"
+
+[[example]]
+name = "discover"
