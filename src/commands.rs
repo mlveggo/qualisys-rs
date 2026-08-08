@@ -123,6 +123,18 @@ impl LedColor {
     }
 }
 
+/// Writes a downloaded capture, refusing to create an empty file.
+///
+/// An empty transfer means something went wrong upstream; writing a zero byte
+/// capture would hide that until someone tried to open it.
+fn write_capture(path: &std::path::Path, bytes: &[u8]) -> Result<()> {
+    if bytes.is_empty() {
+        return Err(Error::Qtm("capture transfer returned no data".into()));
+    }
+    std::fs::write(path, bytes)?;
+    Ok(())
+}
+
 /// Renders a component list with any applicable options.
 pub(crate) fn component_string(
     components: &[ComponentType],
@@ -472,6 +484,26 @@ impl Protocol {
                 got: other.kind_name(),
             }),
         }
+    }
+
+    /// Downloads the current capture as a C3D file and writes it to `path`.
+    pub fn save_capture_c3d(
+        &mut self,
+        path: impl AsRef<std::path::Path>,
+        timeout: Duration,
+    ) -> Result<()> {
+        let bytes = self.get_capture_c3d(timeout)?;
+        write_capture(path.as_ref(), &bytes)
+    }
+
+    /// Downloads the current capture as a QTM file and writes it to `path`.
+    pub fn save_capture_qtm(
+        &mut self,
+        path: impl AsRef<std::path::Path>,
+        timeout: Duration,
+    ) -> Result<()> {
+        let bytes = self.get_capture_qtm(timeout)?;
+        write_capture(path.as_ref(), &bytes)
     }
 
     /// Fetches settings XML for the requested sections.

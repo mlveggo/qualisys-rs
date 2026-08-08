@@ -250,6 +250,21 @@ cargo test --all
 Tests run against an in-process fake QTM server; no hardware or network access
 is required.
 
+## Relationship to qualisys-go
+
+[qualisys-go](https://github.com/mlveggo/qualisys-go) is the sibling Go client.
+The two are kept feature-equivalent: same protocol version ladder, same
+component coverage, same component and parameter options, same UDP support, and
+the same treatment of undecodable components. Where the languages differ the
+APIs follow local idiom — Rust models packets as an enum and returns a
+connected client from `connect`, Go uses a struct with a type tag and separate
+`NewProtocol`/`Connect` — but the wire behaviour is identical.
+
+One deliberate asymmetry: the Go SDK ships two small XML helpers for pulling 3D
+label names and 6D body names out of a settings response. This crate exposes
+raw XML only, so that the library keeps its single `log` dependency rather than
+pulling in an XML parser.
+
 ## Not implemented
 
 - Typed settings (de)serialisation. `get_parameters` and `set_parameters`
