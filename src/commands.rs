@@ -155,10 +155,8 @@ pub(crate) fn component_string(
                     name.push_str(channels);
                 }
             }
-            ComponentType::Skeleton => {
-                if options.skeleton_global {
-                    name.push_str(":global");
-                }
+            ComponentType::Skeleton if options.skeleton_global => {
+                name.push_str(":global");
             }
             _ => {}
         }
