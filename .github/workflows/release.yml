@@ -1,0 +1,72 @@
+name: Release
+
+# Version handling is automated by release-plz, the Rust-native counterpart to
+# semantic-release. Every push to master it reads the conventional commits
+# since the last release and maintains a "chore: release" pull request that
+# bumps Cargo.toml and Cargo.lock and writes CHANGELOG.md. Merging that pull
+# request tags the commit, publishes to crates.io and cuts a GitHub release.
+#
+# Nothing needs a version bumped by hand, and no tag has to be pushed.
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Two releases racing each other would fight over the same tag.
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  release-pr:
+    name: Release pull request
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      # The default token cannot trigger other workflows, so CI does not run on
+      # the release pull request. Store a personal access token (contents and
+      # pull-requests write) as RELEASE_PLZ_TOKEN to get checks on it.
+      - uses: release-plz/action@v0.5
+        with:
+          command: release-pr
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASE_PLZ_TOKEN || github.token }}
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+
+  release:
+    name: Publish to crates.io
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    # Add required reviewers to the `crates-io` environment in the repository
+    # settings to gate publishing behind a manual approval.
+    environment:
+      name: crates-io
+      url: https://crates.io/crates/qualisys
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      # Publishes only when the version in Cargo.toml is not on crates.io yet,
+      # so ordinary pushes to master are a no-op.
+      - uses: release-plz/action@v0.5
+        with:
+          command: release
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}

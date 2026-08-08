@@ -1,5 +1,9 @@
 # qualisys-rs
 
+[![CI](https://github.com/mlveggo/qualisys-rs/actions/workflows/ci.yml/badge.svg)](https://github.com/mlveggo/qualisys-rs/actions/workflows/ci.yml)
+[![crates.io](https://img.shields.io/crates/v/qualisys.svg)](https://crates.io/crates/qualisys)
+[![docs.rs](https://docs.rs/qualisys/badge.svg)](https://docs.rs/qualisys)
+
 A Rust client for the Qualisys Track Manager (QTM) real time protocol.
 
 Speaks RT protocol **1.28** and negotiates down to **1.22** against older QTM
