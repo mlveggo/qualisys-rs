@@ -253,10 +253,22 @@ frame_accessor!(
     "Unlabelled 3D markers, if present."
 );
 frame_accessor!(
+    markers_3d_no_labels_residual,
+    Markers3dNoLabelsResidual,
+    Markers3d,
+    "Unlabelled 3D markers with residuals, if present."
+);
+frame_accessor!(
     bodies_6d,
     Bodies6d,
     Bodies6d,
     "6DOF bodies as rotation matrices, if present."
+);
+frame_accessor!(
+    bodies_6d_residual,
+    Bodies6dResidual,
+    Bodies6d,
+    "6DOF bodies as rotation matrices with residuals, if present."
 );
 frame_accessor!(
     bodies_6d_euler,
@@ -265,13 +277,37 @@ frame_accessor!(
     "6DOF bodies as Euler angles, if present."
 );
 frame_accessor!(
+    bodies_6d_euler_residual,
+    Bodies6dEulerResidual,
+    Bodies6dEuler,
+    "6DOF bodies as Euler angles with residuals, if present."
+);
+frame_accessor!(
     markers_2d,
     Markers2d,
     Markers2d,
     "Per-camera 2D markers, if present."
 );
+frame_accessor!(
+    markers_2d_linearized,
+    Markers2dLinearized,
+    Markers2d,
+    "Linearized per-camera 2D markers, if present."
+);
 frame_accessor!(analog, Analog, Analog, "Analog samples, if present.");
+frame_accessor!(
+    analog_single,
+    AnalogSingle,
+    Analog,
+    "Single-sample analog values, if present."
+);
 frame_accessor!(force, Force, Force, "Force plate samples, if present.");
+frame_accessor!(
+    force_single,
+    ForceSingle,
+    Force,
+    "Single-sample force plate values, if present."
+);
 frame_accessor!(images, Image, Images, "Camera images, if present.");
 frame_accessor!(
     gaze_vectors,
