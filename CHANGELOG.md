@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.2](https://github.com/mlveggo/qualisys-rs/compare/v0.2.1...v0.2.2) - 2026-10-17
+
+### Other
+
+- *(deps)* bump go.einride.tech/sage from 0.418.0 to 0.436.1 in /.sage
+
 ## [0.2.1](https://github.com/mlveggo/qualisys-rs/compare/v0.2.0...v0.2.1) - 2026-09-21
 
 ### Other
